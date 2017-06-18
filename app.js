@@ -23,11 +23,22 @@ let myIncomingMiddlewareController = (bot, update) => {
     if (update.message.text === 'hi' ||
         update.message.text === 'Hi' ||
         update.message.text === 'hello' ||
-        update.message.text === 'Hello') {
-        return bot.reply(update, 'well hi right back at you');
+        update.message.text === 'Hello' ||
+        update.message.text === 'yo' ||
+        update.message.text === 'Hey' ||
+        update.message.text === 'hey') 
+        {
+        const tutorial = ['Hey 👋',
+            'It\'s nice to meet you',
+            'This is a vertical slice for searching for treatments in Kenya',
+            'Try it out!',
+            'Hint: "I want to fund projects in Kenya"',
+        ];
+
+        return bot.sendTextCascadeTo(tutorial, update.sender.id);
     } else if (update.message.text.indexOf('kenya') > -1) {
         return new Promise((resolve, reject) => {
-            if (update.message.text.indexOf('kenya') < -1) return reject('Country was not found');
+            if (update.message.text.indexOf('kenya') < -1 || update.message.text.indexOf('Kenya') < -1) return reject('Country was not found');
             return makeWatsiRequest()
                 .then((patients) => {
                     const filteredPatients = sortByCountry(patients.profiles, 'Kenya');
@@ -39,21 +50,28 @@ let myIncomingMiddlewareController = (bot, update) => {
                     );
                     const firstPatient = filteredPatients.slice(0, 20);
                     let random = getRandomInt(0,20);
-                    const messages = [
+                    const kenyaMessage = [
                         'You can contribute to ' + firstPatient[random].name,
                         firstPatient[random].header,
                         firstPatient[random].url
                     ];
                     return resolve(
-                        bot.sendTextCascadeTo(messages, update.sender.id)
+                        bot.sendTextCascadeTo(kenyaMessage, update.sender.id)
                     );
                 });
         });
+    } else if (update.message.text === 'Thanks' ||
+               update.message.text === 'thanks' ||
+               update.message.text === 'ta' ||
+               update.message.text === 'Thank you' ||
+               update.message.text === 'Thank you, very much' ||
+               update.message.text === 'thank you very much' ) {
+        return bot.reply(update, 'Oh, I\'m blushing. I\'m glad you liked what you found');
     } else {
-        const messages = ['I\'m sorry about this.',
+        const appologies = ['I\'m sorry about this.',
             'But it seems like I couldn\'t understand your message.',
             'Could you try reformulating it?']
-        return bot.sendTextCascadeTo(messages, update.sender.id);
+        return bot.sendTextCascadeTo(appologies, update.sender.id);
     }
 };
 
