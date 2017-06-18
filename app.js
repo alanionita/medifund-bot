@@ -1,6 +1,7 @@
 const path = require('path');
 const { makeWatsiRequest } = require(path.resolve(__dirname, 'watsi', 'index'));
 const { sortByCountry } = require(path.resolve(__dirname, 'watsi', 'methods'));
+const { getRandomInt } = require(path.resolve(__dirname, 'watsi', 'methods'));
 
 const Botmaster = require('botmaster');
 const botmaster = new Botmaster();
@@ -35,17 +36,18 @@ let myIncomingMiddlewareController = (bot, update) => {
                 .then((filteredPatients) => {
                     if (!filteredPatients) return reject(
                         bot.reply(update, 'Sorry we don\'t have any treatment available in that country')
-                    )
+                    );
                     const firstPatient = filteredPatients.slice(0, 20);
+                    let random = getRandomInt(0,20);
                     const messages = [
-                        'You can contribute to ' + firstPatient[0].name,
-                        firstPatient[0].header,
-                        firstPatient[0].url
+                        'You can contribute to ' + firstPatient[random].name,
+                        firstPatient[random].header,
+                        firstPatient[random].url
                     ];
                     return resolve(
                         bot.sendTextCascadeTo(messages, update.sender.id)
                     );
-                })
+                });
         });
     } else {
         const messages = ['I\'m sorry about this.',
