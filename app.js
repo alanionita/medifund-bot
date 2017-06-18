@@ -29,7 +29,7 @@ let myIncomingMiddlewareController = (bot, update) => {
         ];
 
         return bot.sendTextCascadeTo(tutorial, update.sender.id);
-    } else if (update.message.text.indexOf('kenya') > -1) {
+    } else if (update.message.text.indexOf('Kenya') > -1) {
         return new Promise((resolve, reject) => {
             if (update.message.text.indexOf('kenya') < -1 || update.message.text.indexOf('Kenya') < -1) return reject('Country was not found');
             return makeWatsiRequest()
