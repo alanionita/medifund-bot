@@ -7,14 +7,7 @@ const Botmaster = require('botmaster');
 const botmaster = new Botmaster();
 
 const TwitterBot = require('botmaster-twitter-dm');
-const twitterSettings = {
-    credentials: {
-        consumerKey: '9mbs0PQRvUYvmo2usplapHDZZ',
-        consumerSecret: 'lEcNn0uJ6DqBG3tTCnj5PIjg96aUdqa2ODTO7XTJdOW3lD8j2n',
-        accessToken: '875752057252302849-299VRXlTzD7EitNYcCqBfTWcLiQAbQh',
-        accessTokenSecret: 'xH1KY8S2BM1miabJuTtJzAuEn950xh31UnmHOLk6qP50P'
-    }
-};
+const twitterSettings = require(path.resolve(__dirname, 'config'));
 const twitterBot = new TwitterBot(twitterSettings);
 
 botmaster.addBot(twitterBot);
