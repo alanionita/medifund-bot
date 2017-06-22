@@ -19,8 +19,7 @@ let myIncomingMiddlewareController = (bot, update) => {
         update.message.text === 'Hello' ||
         update.message.text === 'yo' ||
         update.message.text === 'Hey' ||
-        update.message.text === 'hey') 
-        {
+        update.message.text === 'hey') {
         const tutorial = ['Hey 👋',
             'It\'s nice to meet you',
             'This is a vertical slice for searching for treatments in Kenya',
@@ -30,35 +29,19 @@ let myIncomingMiddlewareController = (bot, update) => {
 
         return bot.sendTextCascadeTo(tutorial, update.sender.id);
     } else if (update.message.text.indexOf('Kenya') > -1) {
-        return new Promise((resolve, reject) => {
-            if (update.message.text.indexOf('kenya') < -1 || update.message.text.indexOf('Kenya') < -1) return reject('Country was not found');
-            return makeWatsiRequest()
-                .then((patients) => {
-                    const filteredPatients = sortByCountry(patients.profiles, 'Kenya');
-                    return filteredPatients;
-                })
-                .then((filteredPatients) => {
-                    if (!filteredPatients) return reject(
-                        bot.reply(update, 'Sorry we don\'t have any treatment available in that country')
-                    );
-                    const firstPatient = filteredPatients.slice(0, 20);
-                    let random = getRandomInt(0,20);
-                    const kenyaMessage = [
-                        'You can contribute to ' + firstPatient[random].name,
-                        firstPatient[random].header,
-                        firstPatient[random].url
-                    ];
-                    return resolve(
-                        bot.sendTextCascadeTo(kenyaMessage, update.sender.id)
-                    );
-                });
-        });
+        getPlacesICanHelp('Kenya')
+            .then(message => {
+                bot.sendTextCascadeTo(message, update.sender.id)
+            })
+            .catch(err => {
+                bot.update(update, err);
+            });
     } else if (update.message.text === 'Thanks' ||
-               update.message.text === 'thanks' ||
-               update.message.text === 'ta' ||
-               update.message.text === 'Thank you' ||
-               update.message.text === 'Thank you, very much' ||
-               update.message.text === 'thank you very much' ) {
+        update.message.text === 'thanks' ||
+        update.message.text === 'ta' ||
+        update.message.text === 'Thank you' ||
+        update.message.text === 'Thank you, very much' ||
+        update.message.text === 'thank you very much') {
         return bot.reply(update, 'Oh, I\'m blushing. I\'m glad you liked what you found');
     } else {
         const appologies = ['I\'m sorry about this.',
@@ -67,6 +50,30 @@ let myIncomingMiddlewareController = (bot, update) => {
         return bot.sendTextCascadeTo(appologies, update.sender.id);
     }
 };
+
+function getPlacesICanHelp(place) {
+    return new Promise((resolve, reject) => {
+        return makeWatsiRequest()
+            .then((patients) => {
+                const filteredPatients = sortByCountry(patients.profiles, place);
+                return filteredPatients;
+            })
+            .then((filteredPatients) => {
+                if (!filteredPatients) reject('Sorry we don\'t have any treatment available in that country');
+                const firstPatient = filteredPatients.slice(0, 20);
+                let random = getRandomInt(0, 20);
+                const kenyaMessage = [
+                    'You can contribute to ' + firstPatient[random].name,
+                    firstPatient[random].header,
+                    firstPatient[random].url
+                ];
+                return resolve(
+                    kenyaMessage
+                );
+            })
+            .catch(reject);
+    });
+}
 
 botmaster.use({
     type: 'incoming',
