@@ -40,6 +40,8 @@ let myIncomingMiddlewareController = (bot, update) => {
         update.message.text === 'Thank you, very much' ||
         update.message.text === 'thank you very much') {
         return bot.sendTextCascadeTo(messages.thanksReply, update.sender.id);
+    } else if (update.message.text === 'What are you?') {
+        return bot.sendTextCascadeTo(messages.what, update.sender.id);
     } else {
         return bot.sendTextCascadeTo(messages.appologies, update.sender.id);
     }

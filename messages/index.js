@@ -16,6 +16,17 @@ exports.tutorial = [
     '👋',
     'Hey',
     'It\'s nice to meet you',
+    'I\'m here to help you fund 🚑 projects',
+    'Try some of these commands:',
+    '"What are you?"',
+    '"How does it work?"',
+    '"What do I do next?"',
+    '"High five"',
+    '"Maker"',
+    '✌️'
+];
+
+exports.what = [
     'Medi+Funder is just a prototype atm',
     '🤓 : this is a vertical slice for searching for treatments in Kenya',
     'Try it out!',
