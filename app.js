@@ -1,17 +1,20 @@
+// Node requirements
 const path = require('path');
-const { makeWatsiRequest } = require(path.resolve(__dirname, 'watsi', 'index'));
-const { sortByCountry } = require(path.resolve(__dirname, 'watsi', 'methods'));
-const { getRandomInt } = require(path.resolve(__dirname, 'watsi', 'methods'));
-const messages = require(path.resolve(__dirname, 'messages', 'index'));
 
+// Bot setup
 const Botmaster = require('botmaster');
-const botmaster = new Botmaster();
-
 const TwitterBot = require('botmaster-twitter-dm');
 const twitterSettings = require(path.resolve(__dirname, 'config'));
+
+const botmaster = new Botmaster();
 const twitterBot = new TwitterBot(twitterSettings);
 
 botmaster.addBot(twitterBot);
+
+
+// Own requirements: controllers, messages 
+const messages = require(path.resolve(__dirname, 'messages', 'index'));
+const getPlacesICanHelp = require(path.resolve(__dirname, 'controllers', 'getPlacesICanHelp'));
 
 let myIncomingMiddlewareController = (bot, update) => {
     if (update.message.text === 'hi' ||
@@ -41,29 +44,6 @@ let myIncomingMiddlewareController = (bot, update) => {
         return bot.sendTextCascadeTo(messages.appologies, update.sender.id);
     }
 };
-
-function getPlacesICanHelp(place) {
-    return new Promise((resolve, reject) => {
-        return makeWatsiRequest()
-            .then((patients) => {
-                return sortByCountry(patients.profiles, place);
-            })
-            .then((filteredPatients) => {
-                if (!filteredPatients) reject(messages.sorryCountry);
-                const firstPatient = filteredPatients.slice(0, 20);
-                let random = getRandomInt(0, 20);
-                const kenyaMessage = [
-                    'You can contribute to ' + firstPatient[random].name,
-                    firstPatient[random].header,
-                    firstPatient[random].url
-                ];
-                return resolve(
-                    kenyaMessage
-                );
-            })
-            .catch(reject);
-    });
-}
 
 botmaster.use({
     type: 'incoming',
