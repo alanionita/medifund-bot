@@ -46,8 +46,7 @@ function getPlacesICanHelp(place) {
     return new Promise((resolve, reject) => {
         return makeWatsiRequest()
             .then((patients) => {
-                const filteredPatients = sortByCountry(patients.profiles, place);
-                return filteredPatients;
+                return sortByCountry(patients.profiles, place);
             })
             .then((filteredPatients) => {
                 if (!filteredPatients) reject(messages.sorryCountry);
