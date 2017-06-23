@@ -11,7 +11,6 @@ const twitterBot = new TwitterBot(twitterSettings);
 
 botmaster.addBot(twitterBot);
 
-
 // Own requirements: controllers, messages 
 const messages = require(path.resolve(__dirname, 'messages', 'index'));
 const getPlacesICanHelp = require(path.resolve(__dirname, 'controllers', 'getPlacesICanHelp'));
@@ -24,7 +23,7 @@ let myIncomingMiddlewareController = (bot, update) => {
         update.message.text === 'yo' ||
         update.message.text === 'Hey' ||
         update.message.text === 'hey') {
-        return bot.sendTextCascadeTo(messages.tutorial, update.sender.id);
+        bot.sendTextCascadeTo(messages.tutorial, update.sender.id);
     } else if (update.message.text.indexOf('Kenya') > -1) {
         getPlacesICanHelp('Kenya')
             .then(message => {
@@ -42,6 +41,16 @@ let myIncomingMiddlewareController = (bot, update) => {
         return bot.sendTextCascadeTo(messages.thanksReply, update.sender.id);
     } else if (update.message.text === 'What are you?') {
         return bot.sendTextCascadeTo(messages.what, update.sender.id);
+    } else if (update.message.text === 'How does it work?') {
+        return bot.sendTextCascadeTo(messages.how, update.sender.id);
+    } else if (update.message.text === 'What is your mission?') {
+        return bot.sendTextCascadeTo(messages.mission, update.sender.id);
+    } else if (update.message.text === 'What now?') {
+        return bot.sendTextCascadeTo(messages.whatnow, update.sender.id);
+    } else if (update.message.text === 'commands') {
+        return bot.sendTextCascadeTo(messages.commands, update.sender.id);
+    } else if (update.message.text === 'High five') {
+        return bot.reply(update, 'https://giphy.com/gifs/tom-cruise-top-gun-maverick-wrzf9P70YWLJK/fullscreen');
     } else {
         return bot.sendTextCascadeTo(messages.appologies, update.sender.id);
     }
