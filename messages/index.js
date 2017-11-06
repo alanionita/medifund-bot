@@ -27,6 +27,7 @@ exports.commands = [
     '"How does it work?"',
     '"What now?"',
     '"High five"',
+    '"Fund projects in Kenya"'
 ];
 
 exports.what = [
@@ -35,7 +36,7 @@ exports.what = [
     '🤓 : this is a vertical slice for searching for treatments in Kenya',
     'Try it out!',
     'Hint:',
-    '"I want to fund projects in Kenya"',
+    '"Fund projects in Kenya"',
     '✌️'
 ];
 
