@@ -4,7 +4,9 @@
   "description": "First attempt at creating a Twitter bot",
   "main": "bot.js",
   "scripts": {
-    "test": "mocha ./spec/*.spec.js"
+    "test": "mocha ./spec/*.spec.js",
+    "start": "NODE_ENV=production node app.js",
+    "dev": "NODE_ENV=dev nodemon app.js"
   },
   "repository": {
     "type": "git",
