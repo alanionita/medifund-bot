@@ -5,7 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "test": "mocha ./spec/*.spec.js",
-    "start": "NODE_ENV=production node app.js",
+    "start": "node app.js",
     "dev": "NODE_ENV=dev nodemon app.js"
   },
   "repository": {
