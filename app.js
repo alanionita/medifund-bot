@@ -20,7 +20,10 @@ const twitterSettings = {
   }
 };
 
-const botmaster = new Botmaster();
+const botmasterSettings = {
+  port: process.env.PORT || 5000 
+};
+const botmaster = new Botmaster(botmasterSettings);
 const twitterBot = new TwitterBot(twitterSettings);
 
 botmaster.addBot(twitterBot);
